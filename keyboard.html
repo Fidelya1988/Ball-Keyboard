@@ -34,6 +34,7 @@
             this.speed = 5;
             this.xSpeed = 1;
             this.ySpeed = 0;
+            this.size = 10;
 
 
 
@@ -52,8 +53,9 @@
             }
         };
 
-        Ball.prototype.draw = function () {
-            circle(this.x, this.y, 10, true);
+        Ball.prototype.draw = function (size) {
+            circle(this.x, this.y, this.size, true);
+
         };
 
         Ball.prototype.setDirection = function (direction) {
@@ -72,15 +74,40 @@
                 this.xSpeed = 0;
                 this.ySpeed = 0;
             }
-
         };
 
         Ball.prototype.setSpeed = function (newSpeed) {
-            if (newSpeed != undefined) {
+            if (newSpeed != undefined && newSpeed != "slow" && newSpeed != "fast") {
                 this.speed = newSpeed;
             }
+            if (newSpeed === "slow") {
+                this.speed--;
+            }
+            if (this.speed < 1) {
+                this.speed = 1;
+            }
+            console.log(this.speed);
+            if (newSpeed === "fast") {
+                this.speed++;
+            }
+            if (this.speed > 10) {
+                this.speed = 10;
+            }
         };
-
+        Ball.prototype.setSize = function (newSize) {
+            if (newSize === "small") {
+                this.size--;
+            }
+            if (this.size < 2) {
+                this.size = 2;
+            }
+            if (newSize === "big") {
+                this.size++;
+            }
+           if (this.size >canvas.width/10) {
+                this.size = canvas.width/10;
+           }
+   }
 
         var ball = new Ball;
 
@@ -101,16 +128,26 @@
             54: 6,
             55: 7,
             56: 8,
-            57: 9
-
+            57: 9,
+            90: "slow",
+            88: "fast"
         }
+
+        var sizes = {
+            67: "small",
+            86: "big"
+        }
+
+
 
         $("body").keydown(event => {
             var direction = keyAction[event.keyCode];
             var speed = speeds[event.keyCode];
+            var size = sizes[event.keyCode];
             ball.setDirection(direction);
             ball.setSpeed(speed);
-            console.log(direction);
+            ball.setSize(size);
+            console.log(event.keyCode);
         });
 
 
